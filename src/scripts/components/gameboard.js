@@ -4,6 +4,7 @@ const gameBoard = (function(){
 let board =[]
 let missedHits = []
 let ships = []
+let hits = []
 const initalizeBoard = () =>{
     for(let i = 0 ; i < size ; i++){
         board.push([0,0,0,0,0,0,0,0,0,0])
@@ -46,14 +47,27 @@ const placeShip = (ship,isHorizontal,row,column) =>{
 }
 const receiveAttack = ([row,column]) =>{
     if(board[row][column]){
-        board[row][column].hit()
-        return true
+        hits.forEach(hit =>{
+            let [a,b] = [...hit]
+            if(a == row && b == column){
+                throw new Error()
+            }
+        })
+        
+            board[row][column].hit()
+            hits.push([row,column])
+            console.log(hits)
+            return true
+        
+        
+        
+        
     }
     missedHits.push([row,column])
     return false
 }
 const getMissedHits = () => missedHits
-
+const getHits = () => hits
 const didAllSink = () => {
     for(let i = 0 ; i < ships.length ; i++){
         if(!ships[i].isSunk()){
@@ -62,7 +76,7 @@ const didAllSink = () => {
     }
     return true
 }
-return {placeShip,initalizeBoard,clearBoard , receiveAttack,getMissedHits , didAllSink}
+return {placeShip,initalizeBoard,clearBoard , receiveAttack,getMissedHits , didAllSink ,getHits}
     }
 return {createGameBoard}
 })()

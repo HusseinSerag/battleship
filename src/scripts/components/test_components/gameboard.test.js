@@ -1,6 +1,7 @@
 
 const Ship = require('./../ship.js')
-const gameBoard = require('./../gameboard.js')
+const gameBoard = require('./../gameboard.js');
+
 
 
 
@@ -262,4 +263,27 @@ describe('gameBoardObject should Report if all ships sunk or not ',()=>{
     })
 })
 
+describe(' can\'t hit in the same place twice',()=>{
+    let ship1;
+    let ship2;
+    let gameBoardObject
+    beforeEach((
+    )=>{
+        ship1 = Ship.createShip(4,0,false)
+        ship2 = Ship.createShip(3,0,false)
+        gameBoardObject = gameBoard.createGameBoard()
+        gameBoardObject.initalizeBoard()
+        gameBoardObject.placeShip(ship1,true,2,2)
+        gameBoardObject.placeShip(ship2,false,3,4)
+    })
+    afterEach(()=>{
+        gameBoardObject.clearBoard()
+    })
+    test('Duplicate hit return error',()=>{
+        expect(gameBoardObject.receiveAttack([2,2])).toBe(true)
+        expect(()=>gameBoardObject.receiveAttack([2,2])).toThrow(Error)
+        expect(()=>gameBoardObject.receiveAttack([2,2])).toThrow(Error)
+        expect(gameBoardObject.receiveAttack([2,3])).toBe(true)
+    })
+})
 
