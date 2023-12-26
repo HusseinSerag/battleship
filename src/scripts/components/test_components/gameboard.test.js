@@ -185,5 +185,33 @@ describe('Test Placement of 2 Ships',()=>{
 })
 
 
+describe('Receive Attack functionality',()=>{
+    let ship1;
+    let ship2;
+    beforeEach((
+    )=>{
+        ship1 = Ship.createShip(4,0,false)
+        ship2 = Ship.createShip(6,0,false)
+        gameBoard.initalizeBoard()
+        gameBoard.placeShip(ship1,true,2,2)
+        gameBoard.placeShip(ship2,false,3,4)
+    })
+    afterEach(()=>{
+        gameBoard.clearBoard()
+    })
+    test('Gameboard does receives hit',()=>{
+        expect(gameBoard.receiveAttack([2,2])).toBe(true)
+        expect(gameBoard.receiveAttack([4,4])).toBe(true)
+        
+    })
+    test('Gameboard record All missed hits',()=>{
+        expect(gameBoard.receiveAttack([2,2])).toBe(true)
+        expect(gameBoard.receiveAttack([0,0])).toBe(false)
+        expect(gameBoard.receiveAttack([0,1])).toBe(false)
+        expect(gameBoard.getMissedHits()).toContainEqual([0,0])
+        expect(gameBoard.getMissedHits()).toContainEqual([0,1])
+        
+    })
+})
 
 
