@@ -1,8 +1,8 @@
 const Ship = (function(){
-    const createShip = (length,numberOfHits, isSunk) =>{
+    const createShip = (length,numberOfHits, isShipSunk) =>{
         let shipLength = length
         let shipNumberOfHits = numberOfHits
-        let shipIsSunk = isSunk
+        let shipIsSunk = isShipSunk
         const getLength = () => shipLength
         const setLength = (newLength) =>{
             shipLength = newLength
@@ -21,7 +21,12 @@ const Ship = (function(){
         const hit = () =>{
             incrementNumberOfHits(getNumberOfHits())
         }
-        return {getLength , setLength , getNumberOfHits , setNumberOfHits , getIsSunk , setIsSunk , hit}
+        const isSunk = () =>{
+            if(getNumberOfHits() == getLength())
+            setIsSunk(true)
+        return getIsSunk()
+        }
+        return {getLength , setLength , getNumberOfHits , setNumberOfHits , getIsSunk , setIsSunk , hit , isSunk}
     }
     return {createShip}
 })()

@@ -15,3 +15,18 @@ describe('Testing of the hit function',()=>{
         expect(ship.getNumberOfHits()).toBe(3)
     })
 })
+
+describe('Testing is Sunk',()=>{
+    test('Test that ship doesn\'t sink if hits less than length',()=>{
+        ship.hit()
+        ship.hit()
+        expect(ship.isSunk()).toBe(false)
+    })
+    test('Test that ship sinks ',()=>{
+        ship.hit()
+        ship.hit()
+        ship.hit()
+        ship.hit()
+        expect(ship.isSunk()).toBe(true)
+    })
+})
