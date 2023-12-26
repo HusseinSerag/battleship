@@ -4,7 +4,8 @@ const gameBoard = (function(){
 let board =[]
 let missedHits = []
 let ships = []
-let hits = []
+let shipHits = []
+let allHits = []
 const initalizeBoard = () =>{
     for(let i = 0 ; i < size ; i++){
         board.push([0,0,0,0,0,0,0,0,0,0])
@@ -46,17 +47,25 @@ const placeShip = (ship,isHorizontal,row,column) =>{
     
 }
 const receiveAttack = ([row,column]) =>{
+    allHits.forEach(hit=>{
+        let [a,b] = [...hit]
+        if(a == row && b == column){
+            throw new Error()
+        }
+    })
     if(board[row][column]){
-        hits.forEach(hit =>{
+
+        shipHits.forEach(hit =>{
             let [a,b] = [...hit]
             if(a == row && b == column){
                 throw new Error()
             }
         })
         
+        
             board[row][column].hit()
-            hits.push([row,column])
-            console.log(hits)
+            shipHits.push([row,column])
+            allHits.push([row,column])
             return true
         
         
@@ -64,10 +73,11 @@ const receiveAttack = ([row,column]) =>{
         
     }
     missedHits.push([row,column])
+    allHits.push([row,column])
     return false
 }
 const getMissedHits = () => missedHits
-const getHits = () => hits
+const getHits = () => shipHits
 const didAllSink = () => {
     for(let i = 0 ; i < ships.length ; i++){
         if(!ships[i].isSunk()){
@@ -76,7 +86,7 @@ const didAllSink = () => {
     }
     return true
 }
-return {placeShip,initalizeBoard,clearBoard , receiveAttack,getMissedHits , didAllSink ,getHits}
+return {placeShip,initalizeBoard,clearBoard , receiveAttack,getMissedHits , didAllSink ,getHits,board,allHits}
     }
 return {createGameBoard}
 })()

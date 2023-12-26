@@ -1,7 +1,8 @@
 const Ship = require('./../ship.js')
 const gameBoard = require('./../gameboard.js')
 const Player = require('./../player.js')
-const { afterEach } = require('node:test')
+
+
 describe('AI and Normal players are created normally',()=>{
     test('AI and player is created',()=>{
         let AI = Player.createPlayer('AI')
@@ -46,9 +47,47 @@ describe('Player and AI can place their attacks correctly',()=>{
         EnemyBoard.clearBoard()
     })
     test('Player and AI can attack inbound ',()=>{
-        let attack = player1.attack(0,0,EnemyBoard.getMissedHits())
-        expect(EnemyBoard.receiveAttack([...attack])).toBe(true)
+        let attack = player1.attack(0,0,EnemyBoard)
+        expect(EnemyBoard.receiveAttack(attack)).toBe(true)
         
     })
-    
+    test('Throws error when player attacks already attacked cell',()=>{
+
+        
+
+        let attack = player1.attack(0,0)
+        EnemyBoard.receiveAttack(attack)
+         attack = player1.attack(0,0)
+        expect(()=>EnemyBoard.receiveAttack(attack)).toThrow(Error)
+
+
+        attack = player1.attack(9,9)
+        EnemyBoard.receiveAttack(attack)
+        attack = player1.attack(9,9)
+        expect(()=>EnemyBoard.receiveAttack(attack)).toThrow(Error)
+
+        attack = player1.attack(8,8)
+        EnemyBoard.receiveAttack(attack)
+        attack = player1.attack(8,8)
+        expect(()=>EnemyBoard.receiveAttack(attack)).toThrow(Error)
+
+        attack = player1.attack(3,3)
+        EnemyBoard.receiveAttack(attack)
+        attack = player1.attack(3,3)
+        expect(()=>EnemyBoard.receiveAttack(attack)).toThrow(Error)
+        
+        
+    })
+    /*
+    test('Throws error when AI attacks an already hit ship',()=>{
+
+        let attack = AI.randAttack(PlayerBoard.board.length)
+        PlayerBoard.receiveAttack(attack)
+        expect(() => AI.randAttack(PlayerBoard.board.length)).toThrow()
+        
+        
+    })
+    */
 })
+
+

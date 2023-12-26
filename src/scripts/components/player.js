@@ -1,21 +1,28 @@
 const Player = (function(){
     const createPlayer = (type) =>{
-      const attack = (row,column,missList) => 
+      const attack = (row,column) => 
       {
-        if(missList.includes([row,column])){
-            throw new Error()
-        }
-        else{
             return [row,column]
-        }
+        
       }
-      const randAttack = (sizeOfBoard,missList) =>{
-        return [Math.floor(Math.random()*sizeOfBoard),Math.floor(Math.random()*sizeOfBoard)]
+      
+     
+      const randAttack = (sizeOfBoard) =>{
+        
+        let randomXcoordinate = Math.floor(Math.random()*sizeOfBoard)
+        let randomYcoordinate = Math.floor(Math.random()*sizeOfBoard) 
+        
+        
+        
+        return [randomXcoordinate,randomYcoordinate]
       }
-      if(type == 'AI')
-        return Object.assign({},{randAttack})
+
+      
+    if(type == 'AI')
+    return Object.assign({},{randAttack})
       return Object.assign({},{attack})
     }
+    
     return {createPlayer}
 })()
 module.exports = Player
