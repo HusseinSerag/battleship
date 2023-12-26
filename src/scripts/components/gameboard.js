@@ -1,7 +1,9 @@
 const gameBoard = (function(){
-const size = 10
+    const createGameBoard = () =>{
+        const size = 10
 let board =[]
 let missedHits = []
+let ships = []
 const initalizeBoard = () =>{
     for(let i = 0 ; i < size ; i++){
         board.push([0,0,0,0,0,0,0,0,0,0])
@@ -38,7 +40,7 @@ const placeShip = (ship,isHorizontal,row,column) =>{
         }
     }
     
-    
+    ships.push(ship)
     return board
     
 }
@@ -51,7 +53,18 @@ const receiveAttack = ([row,column]) =>{
     return false
 }
 const getMissedHits = () => missedHits
-return {placeShip,initalizeBoard,clearBoard , receiveAttack,getMissedHits}
+
+const didAllSink = () => {
+    for(let i = 0 ; i < ships.length ; i++){
+        if(!ships[i].isSunk()){
+            return false
+        }
+    }
+    return true
+}
+return {placeShip,initalizeBoard,clearBoard , receiveAttack,getMissedHits , didAllSink}
+    }
+return {createGameBoard}
 })()
 
 module.exports = gameBoard
