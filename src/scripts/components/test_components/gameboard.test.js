@@ -87,4 +87,103 @@ test('Ship can be places vertically',()=>{
         
     expect(gameBoard.placeShip(ship,false,5,4)).toEqual(finalArr)
 })
+
+test('Ship can\'t be placed out of bound',()=>{    
+    expect(() => gameBoard.placeShip(ship,true,7,7)).toThrow(Error)
 })
+test('Ship can\'t be placed out of bound',()=>{    
+    expect(() => gameBoard.placeShip(ship,true,0,0)).not.toThrow(Error)
+})
+test('Ship can\'t be placed out of bound',()=>{    
+    expect(() => gameBoard.placeShip(ship,false,3,3)).not.toThrow(Error)
+})
+test('Ship can\'t be placed out of bound',()=>{    
+    expect(() => gameBoard.placeShip(ship,false,9,7)).toThrow(Error)
+})
+})
+
+
+
+describe('Test Placement of 2 Ships',()=>{
+    let ship1;
+    let ship2;
+    beforeEach((
+    )=>{
+        ship1 = Ship.createShip(4,0,false)
+        ship2 = Ship.createShip(6,0,false)
+        gameBoard.initalizeBoard()
+    })
+    afterEach(()=>{
+        gameBoard.clearBoard()
+    })
+    test('Test Placement of non overlapping ships',()=>{
+        let finalArr = [
+            [ship1,ship1,ship1,ship1,0,0,0,0,0,0],
+            [ship2,ship2,ship2,ship2,ship2,ship2,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0,0],
+            ]
+            gameBoard.placeShip(ship1,true,0,0)
+            expect(gameBoard.placeShip(ship2,true,1,0)).toEqual(finalArr)
+    })
+    test('Test Placement of non overlapping ships',()=>{
+        let finalArr = [
+            [0,0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0,0],
+            [0,0,ship1,ship1,ship1,ship1,0,0,0,0],
+            [0,0,0,0,ship2,0,0,0,0,0],
+            [0,0,0,0,ship2,0,0,0,0,0],
+            [0,0,0,0,ship2,0,0,0,0,0],
+            [0,0,0,0,ship2,0,0,0,0,0],
+            [0,0,0,0,ship2,0,0,0,0,0],
+            [0,0,0,0,ship2,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0,0],
+            ]
+            gameBoard.placeShip(ship1,true,2,2)
+            expect(gameBoard.placeShip(ship2,false,3,4)).toEqual(finalArr)
+    })
+
+    test('Placement of overlapping ships',()=>{
+        let finalArr = [
+            [0,0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0,0],
+            [0,0,ship1,ship1,ship1,ship1,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0,0],
+            ]
+            expect(gameBoard.placeShip(ship1,true,2,2)).toEqual(finalArr)
+            expect(()=>gameBoard.placeShip(ship2,false,2,4)).toThrow(Error)
+    })
+    test('Placement of overlapping ships',()=>{
+        let finalArr = [
+            [0,0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0,0],
+            [0,0,ship2,ship2,ship2,ship2,ship2,ship2,0,0],
+            [0,0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0,0],
+            ]
+            expect(gameBoard.placeShip(ship2,true,2,2)).toEqual(finalArr)
+            expect(()=>gameBoard.placeShip(ship1,true,2,2)).toThrow(Error)
+            
+    })
+})
+
+
+
+
