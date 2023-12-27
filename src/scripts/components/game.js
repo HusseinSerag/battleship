@@ -3,6 +3,7 @@ const gameBoard = require('./gameboard.js')
 const Player = require('./player.js')
 
  const game = (function(){
+    let shipLengths = [2,3,3,4,5]
     let playerBoard;
     let enemyBoard;
     let player1;
@@ -15,9 +16,23 @@ const Player = require('./player.js')
         enemyBoard = gameBoard.createGameBoard()
         playerBoard.initalizeBoard()
         enemyBoard.initalizeBoard()
+        ship1 = Ship.createShip(3,0,false)
+        ship2 = Ship.createShip(3,0,false)
+        ship3 = Ship.createShip(6,0,false)
         playerBoard.placeShip(ship1,true,0,0)
         playerBoard.placeShip(ship3,false,2,2)
-        enemyBoard.placeShip(ship2,false,0,0)
+       let j = 0 
+       let trueOrFalse = [true,false]
+       while(j < shipLengths.length){
+        try{
+            let ship = Ship.createShip(shipLengths[j],0,false)
+            enemyBoard.placeShip(ship,trueOrFalse[Math.floor(Math.random()*trueOrFalse.length)],Math.floor(Math.random()*10),Math.floor(Math.random()*10))
+            j++
+        }catch(Error){
+            
+        }
+       }
+        
         player1 = Player.createPlayer('','P1')
         player2 = Player.createPlayer('AI','P2')
         Player.setCurrentPlayer(player1)
@@ -45,9 +60,6 @@ const Player = require('./player.js')
                 console.log(enemyBoard)
                 let result = enemyBoard.receiveAttack([row,column])
                 let isSunken = enemyBoard.didAllSink()
-                console.log(enemyBoard.board)
-                console.log(enemyBoard.getMissedHits())
-                console.log(enemyBoard.getHits())
                 Player.changeCurrentPlayer(player2 , player1)
                 return [result,isSunken]
                 

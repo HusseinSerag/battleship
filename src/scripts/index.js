@@ -4,7 +4,7 @@ const Game = require('./components/game.js')
 
 let gamePlayBoard = DOM.gamePlay()
 let playerBoard
-    let computerBoard
+let computerBoard
 
 let shipRendering = DOM.renderPlaceShipsOnBoard()
 let startGame = shipRendering.querySelector('.start-game')
@@ -22,11 +22,14 @@ let isAllSunk = false
 startGame.addEventListener('click',()=>{
     DOM.clearScreen()
     Game.startGame()
-    
-    Game.getEnemyBoard()
     document.body.appendChild(gamePlayBoard)
-     playerBoard = document.querySelectorAll('.player-container .board-start-container .board-start-div')
-     computerBoard = document.querySelectorAll('.computer-container .board-start-container .board-start-div')
+    renderGame(gamePlayBoard)
+})
+
+function renderGame(){
+    console.log('here')
+    playerBoard = gamePlayBoard.querySelectorAll('.player-container .board-start-container .board-start-div')
+     computerBoard = gamePlayBoard.querySelectorAll('.computer-container .board-start-container .board-start-div')
     
     DOM.populateBoard(playerBoard,Game.getPlayerBoard(),Game.getPlayerBoard().getShips())
     DOM.populateBoard(computerBoard,Game.getEnemyBoard(),Game.getEnemyBoard().getShips())
@@ -51,6 +54,7 @@ for(let i = 0 ; i < computerBoard.length ; i++){
         if(isAllSunk == false){
             try{
                 [hit, isAllSunk ]=  Game.playRound(i,'Player')
+                
                if(hit)
                {
                 Array.from((computerBoard[i]).children)[0].classList.add('visible')
@@ -61,7 +65,11 @@ for(let i = 0 ; i < computerBoard.length ; i++){
                 computerBoard[i].appendChild(div)
                }
                if(isAllSunk){
-                console.log('game ended!')
+                gamePlayBoard = DOM.gamePlay()
+                isAllSunk = false
+                DOM.clearScreen()
+                
+                document.body.appendChild(shipRendering)
                }else{
                 console.log('lesa')
                }
@@ -75,6 +83,6 @@ for(let i = 0 ; i < computerBoard.length ; i++){
        
     })
 }
-})
+}
 
 
