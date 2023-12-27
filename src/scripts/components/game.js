@@ -43,17 +43,25 @@ const Player = require('./player.js')
         if(attacker == 'Player'){
             try{
                 console.log(enemyBoard)
-                enemyBoard.receiveAttack([row,column])
+                let result = enemyBoard.receiveAttack([row,column])
+                let isSunken = enemyBoard.didAllSink()
                 console.log(enemyBoard.board)
                 console.log(enemyBoard.getMissedHits())
                 console.log(enemyBoard.getHits())
+                Player.changeCurrentPlayer(player2 , player1)
+                return [result,isSunken]
+                
             }
             catch(err){
                 console.log(err)
                 throw err
             }
         }
-        Player.changeCurrentPlayer(player2 , player1)
+        else{
+            Player.changeCurrentPlayer(player2 , player1)
+        }
+        
+
     }
     return {startGame,getPlayerBoard,getEnemyBoard,playRound}
 })()

@@ -18,7 +18,7 @@ startBtn.addEventListener('click',()=>{
     document.body.appendChild(shipRendering)
     
 })
-
+let isAllSunk = false
 startGame.addEventListener('click',()=>{
     DOM.clearScreen()
     Game.startGame()
@@ -29,25 +29,49 @@ startGame.addEventListener('click',()=>{
      computerBoard = document.querySelectorAll('.computer-container .board-start-container .board-start-div')
     
     DOM.populateBoard(playerBoard,Game.getPlayerBoard(),Game.getPlayerBoard().getShips())
-    DOM.populateBoard(computerBoard,Game.getPlayerBoard(),Game.getPlayerBoard().getShips())
+    DOM.populateBoard(computerBoard,Game.getEnemyBoard(),Game.getEnemyBoard().getShips())
     
 for(let i = 0 ; i < playerBoard.length ; i++){
     playerBoard[i].addEventListener('click',()=>{
-        try{
-            Game.playRound(i,'Computer')
-        }catch(error){
-
+        
+        if(isAllSunk == false){
+            try{
+                Game.playRound(i,'Computer')
+            }catch(error){
+    
+            }
         }
+        
        
     })
 }
 for(let i = 0 ; i < computerBoard.length ; i++){
     computerBoard[i].addEventListener('click',()=>{
-        try{
-            Game.playRound(i,'Player')
-        }catch(error){
-            
+         
+        if(isAllSunk == false){
+            try{
+                [hit, isAllSunk ]=  Game.playRound(i,'Player')
+               if(hit)
+               {
+                Array.from((computerBoard[i]).children)[0].classList.add('visible')
+               }
+               else{
+                let div = document.createElement('div')
+                div.classList.add('missed')
+                computerBoard[i].appendChild(div)
+               }
+               if(isAllSunk){
+                console.log('game ended!')
+               }else{
+                console.log('lesa')
+               }
+               
+            }catch(error){
+                
+            }
         }
+        
+        
        
     })
 }

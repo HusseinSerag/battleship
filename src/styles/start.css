@@ -52,6 +52,9 @@ body{
 }
 .board-start-div{
     background-color: #ADD8E6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .board-start-div:hover{
     transform: scale(1.1);
@@ -109,17 +112,37 @@ font-size: 1rem;
     font-size: 1rem;
     }
 
-.player-container [class*="-div picked"]{
 
-display: flex;
-justify-content: center;
-align-items: center;
-}
 .player-container [class*=picked] [class*=ball]{
     width:15px;
     height: 15px;
     border-radius: 15px;
     background-color: #505050;
 }
+.computer-container [class*=picked] [class*=ball]{
+    width:15px;
+    height: 15px;
+    border-radius: 15px;
+    background-color: #f22613;
+    visibility: hidden;
+}
+
+.computer-container [class*=picked] [class*="visible"]{
+    width:15px;
+    height: 15px;
+    border-radius: 15px;
+    background-color: #f22613;
+    visibility: visible;
+}
+
+.missed{
+    width:15px;
+    height: 15px;
+    border-radius: 15px;
+    background-color: #505050;
+    
+    
+}
+
 
 
