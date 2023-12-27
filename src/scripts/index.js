@@ -31,5 +31,26 @@ startGame.addEventListener('click',()=>{
     DOM.populateBoard(playerBoard,Game.getPlayerBoard(),Game.getPlayerBoard().getShips())
     DOM.populateBoard(computerBoard,Game.getPlayerBoard(),Game.getPlayerBoard().getShips())
     
+for(let i = 0 ; i < playerBoard.length ; i++){
+    playerBoard[i].addEventListener('click',()=>{
+        try{
+            Game.playRound(i,'Computer')
+        }catch(error){
+
+        }
+       
+    })
+}
+for(let i = 0 ; i < computerBoard.length ; i++){
+    computerBoard[i].addEventListener('click',()=>{
+        try{
+            Game.playRound(i,'Player')
+        }catch(error){
+            
+        }
+       
+    })
+}
 })
+
 
