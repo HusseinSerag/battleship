@@ -103,3 +103,33 @@ function header(text){
     return div
     
 }
+
+
+export function populateBoard(arrayOfDivs , gameBoard,ships){
+    let gameBoard1D = []
+    
+    for(let i = 0 ; i < 10; i++){
+        for(let j = 0 ;  j < 10 ; j++){
+            gameBoard1D.push(gameBoard.board[i][j])
+        }
+    }
+   
+    for(let i = 0 ; i < gameBoard1D.length ; i++){
+        if(gameBoard1D[i]){
+            for(let j = 0 ; j < ships.length ; j++){
+                if(ships[j] == gameBoard1D[i]){
+                    
+                    
+                    
+                    let picked = document.createElement('div')
+                    picked.classList.add(`picked-ball-${ships[j].getLength()}`)
+                    arrayOfDivs[i].classList.add(`picked-${ships[j].getLength()}`)
+                    arrayOfDivs[i].appendChild(picked)
+                }
+                
+            }
+            
+        }
+    }
+
+}

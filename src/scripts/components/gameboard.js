@@ -78,6 +78,7 @@ const receiveAttack = ([row,column]) =>{
 }
 const getMissedHits = () => missedHits
 const getHits = () => shipHits
+const getShips = () => ships
 const didAllSink = () => {
     for(let i = 0 ; i < ships.length ; i++){
         if(!ships[i].isSunk()){
@@ -86,7 +87,7 @@ const didAllSink = () => {
     }
     return true
 }
-return {placeShip,initalizeBoard,clearBoard , receiveAttack,getMissedHits , didAllSink ,getHits,board,allHits}
+return {placeShip,initalizeBoard,clearBoard , receiveAttack,getMissedHits , didAllSink ,getHits,board,allHits , getShips}
     }
 return {createGameBoard}
 })()

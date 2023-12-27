@@ -108,3 +108,18 @@ font-size: 1rem;
     padding:5px 20px;
     font-size: 1rem;
     }
+
+.player-container [class*="-div picked"]{
+
+display: flex;
+justify-content: center;
+align-items: center;
+}
+.player-container [class*=picked] [class*=ball]{
+    width:15px;
+    height: 15px;
+    border-radius: 15px;
+    background-color: #505050;
+}
+
+
