@@ -1,8 +1,6 @@
 import '../../styles/start.css'
 export function renderStart(){
-    Array.from(document.body.children).forEach(child=>{
-        document.body.removeChild(child)
-    })
+   
     let container = document.createElement('div')
     container.classList.add('start-container')
 
@@ -20,15 +18,17 @@ export function renderStart(){
 }
 
 export function renderPlaceShipsOnBoard(boardSize=100){
-     Array.from(document.body.children).forEach(child=>{
-        document.body.removeChild(child)
-    })
+    
     let mainContainer = document.createElement('div')
     mainContainer.classList.add('start-and-choice')
      let container = document.createElement('div')
         mainContainer.appendChild(renderBoard(container,boardSize))
         let choices = document.createElement('div')
         mainContainer.appendChild(renderChoices(choices))
+        let startGame = document.createElement('button')
+        startGame.classList.add('start-game')
+        startGame.textContent = 'START BATTLE'
+        mainContainer.appendChild(startGame)
         return mainContainer
 }
 
@@ -64,4 +64,42 @@ function renderBoard(container,boardSize){
         
     }
     return container
+}
+
+export function clearScreen(){
+    Array.from(document.body.children).forEach(child=>{
+        document.body.removeChild(child)
+    })
+}
+
+export function gamePlay(){
+    Array.from(document.body.children).forEach(child=>{
+        document.body.removeChild(child)
+    })
+    let mainContainer = document.createElement('div')
+    mainContainer.classList.add('game-container')
+
+    let player = document.createElement('div')
+    player.classList.add('player-container')
+    let Computer = document.createElement('div')
+    Computer.classList.add('computer-container')
+
+    player.appendChild(header('Your Fleet'))
+    Computer.appendChild(header('Computer\'s Fleet'))
+    let containerPlayer = document.createElement('div')
+    let containerComputer = document.createElement('div')
+    player.appendChild(renderBoard(containerPlayer , 100))
+    Computer.appendChild(renderBoard(containerComputer , 100))
+
+    mainContainer.appendChild(player)
+    mainContainer.appendChild(Computer)
+    return mainContainer
+}
+
+function header(text){
+    let div = document.createElement('div')
+    div.classList.add('player-fleet')
+    div.textContent = text
+    return div
+    
 }

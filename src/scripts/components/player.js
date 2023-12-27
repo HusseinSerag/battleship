@@ -1,4 +1,9 @@
 const Player = (function(){
+  let currentPlayer;
+  const setCurrentPlayer = (player) =>{
+    currentPlayer = player
+  }
+  const getCurrentPlayer = () => currentPlayer
     const createPlayer = (type) =>{
       const attack = (row,column) => 
       {
@@ -23,6 +28,6 @@ const Player = (function(){
       return Object.assign({},{attack})
     }
     
-    return {createPlayer}
+    return {createPlayer,setCurrentPlayer,getCurrentPlayer}
 })()
 module.exports = Player

@@ -46,12 +46,15 @@ body{
     display: grid;
     grid-template: repeat(11,25px)/ repeat(11,25px);
     gap:5px;
-    padding:1rem;
-    background-color: white;
+    
+    
 
 }
 .board-start-div{
     background-color: #ADD8E6;
+}
+.board-start-div:hover{
+    transform: scale(1.1);
 }
 .board-start-div-letters,  .board-start-div-numbers{
     color:#5a5a5a;
@@ -59,5 +62,49 @@ body{
 }
 .start-and-choice{
     display: flex;
-    flex-flow:column nowrap
+    flex-flow:column nowrap;
+    padding:1rem;
+    gap:10px;
+    background-color: white;
 }
+.start-game{
+    border: none;
+    color:#505050;
+    
+}
+.start-game:hover{
+    transform: scale(1.1);
+}
+
+.game-container{
+    display: grid;
+    grid-template-columns:  repeat(2,auto);
+    column-gap: 50px;
+    background-color: white;
+    padding:2rem;
+    justify-content: center;
+    align-items: center;
+    border-radius: 1rem;
+    border:1rem gray solid
+}
+.game-container .player-container , .game-container .computer-container{
+display: flex;
+gap:15px;
+flex-direction: column;
+;
+}
+
+.player-container .player-fleet{
+background-color: #f22613 ;
+text-align: center;
+border-radius: 5px;
+padding:5px 20px;
+font-size: 1rem;
+}
+.computer-container .player-fleet{
+    background-color: #505050 ;
+    text-align: center;
+    border-radius: 5px;
+    padding:5px 20px;
+    font-size: 1rem;
+    }
