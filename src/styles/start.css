@@ -117,7 +117,11 @@ font-size: 1rem;
     width:15px;
     height: 15px;
     border-radius: 15px;
-    background-color: #505050;
+    background-color: #252958;
+}
+.player-container [class*=picked] [class*=hit]{
+    
+    background-color: #f22613;
 }
 .computer-container [class*=picked] [class*=ball]{
     width:15px;

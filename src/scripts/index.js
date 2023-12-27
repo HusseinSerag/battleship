@@ -18,6 +18,7 @@ startBtn.addEventListener('click',()=>{
     document.body.appendChild(shipRendering)
     
 })
+
 let isAllSunk = false
 startGame.addEventListener('click',()=>{
     DOM.clearScreen()
@@ -34,26 +35,17 @@ function renderGame(){
     DOM.populateBoard(playerBoard,Game.getPlayerBoard(),Game.getPlayerBoard().getShips())
     DOM.populateBoard(computerBoard,Game.getEnemyBoard(),Game.getEnemyBoard().getShips())
     
-for(let i = 0 ; i < playerBoard.length ; i++){
-    playerBoard[i].addEventListener('click',()=>{
-        
-        if(isAllSunk == false){
-            try{
-                Game.playRound(i,'Computer')
-            }catch(error){
-    
-            }
-        }
-        
-       
-    })
-}
+let chosenX , chosenY , result , sunk = false
+
 for(let i = 0 ; i < computerBoard.length ; i++){
     computerBoard[i].addEventListener('click',()=>{
          
         if(isAllSunk == false){
             try{
                 [hit, isAllSunk ]=  Game.playRound(i,'Player')
+                
+                
+
                 
                if(hit)
                {
@@ -70,8 +62,48 @@ for(let i = 0 ; i < computerBoard.length ; i++){
                 DOM.clearScreen()
                 
                 document.body.appendChild(shipRendering)
-               }else{
-                console.log('lesa')
+               }
+               else{
+                if(sunk == false){
+                    [chosenX , chosenY , result , sunk] = [...Game.AIMove()]
+                console.log(chosenX , chosenY , result , sunk)
+                if(!result)
+                {
+                    if(chosenX == 0){
+                        let div = document.createElement('div')
+                    div.classList.add('missed')
+                    playerBoard[chosenY].appendChild(div)
+                        
+                    }else{
+                        let stringNumber = `${chosenX}${chosenY}`
+                        let number = Number(stringNumber)
+                        console.log(number)
+                        let div = document.createElement('div')
+                    div.classList.add('missed')
+                    playerBoard[number].appendChild(div)
+                    }
+                }
+                else{
+                    if(chosenX == 0){
+                        
+                    Array.from((playerBoard[chosenY]).children)[0].classList.add('hit')
+                        
+                    }else{
+                        let stringNumber = `${chosenX}${chosenY}`
+                        let number = Number(stringNumber)
+                        console.log(number)
+                        Array.from((playerBoard[number]).children)[0].classList.add('hit')
+                    }
+                }
+                if(sunk){
+                    gamePlayBoard = DOM.gamePlay()
+                    sunk = false
+                DOM.clearScreen()
+                
+                document.body.appendChild(shipRendering)
+                }
+                }
+                
                }
                
             }catch(error){

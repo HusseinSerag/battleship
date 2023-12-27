@@ -8,9 +8,7 @@ const Player = require('./player.js')
     let enemyBoard;
     let player1;
     let player2;
-    let ship1 = Ship.createShip(3,0,false)
-    let ship2 = Ship.createShip(3,0,false)
-    let ship3 = Ship.createShip(6,0,false)
+   
     const startGame = () =>{
         playerBoard = gameBoard.createGameBoard()
         enemyBoard = gameBoard.createGameBoard()
@@ -29,7 +27,7 @@ const Player = require('./player.js')
             enemyBoard.placeShip(ship,trueOrFalse[Math.floor(Math.random()*trueOrFalse.length)],Math.floor(Math.random()*10),Math.floor(Math.random()*10))
             j++
         }catch(Error){
-            
+
         }
        }
         
@@ -53,14 +51,16 @@ const Player = require('./player.js')
             throw new Error('Wrong Board')
         }
         else if(Player.getCurrentPlayer() == player2 && attacker == 'Player'){
+            Player.changeCurrentPlayer(player2 , player1)
             throw new Error('Wrong Board')
         }
         if(attacker == 'Player'){
             try{
-                console.log(enemyBoard)
+                
                 let result = enemyBoard.receiveAttack([row,column])
                 let isSunken = enemyBoard.didAllSink()
                 Player.changeCurrentPlayer(player2 , player1)
+                
                 return [result,isSunken]
                 
             }
@@ -69,13 +69,29 @@ const Player = require('./player.js')
                 throw err
             }
         }
-        else{
-            Player.changeCurrentPlayer(player2 , player1)
-        }
         
 
     }
-    return {startGame,getPlayerBoard,getEnemyBoard,playRound}
+    const AIMove = () =>{
+        while(true){
+            try{
+               let yCoord = Math.floor(Math.random()*10)
+               let xCoord = Math.floor(Math.random()*10)
+                let result = playerBoard.receiveAttack([xCoord,yCoord])
+                let isSunken = playerBoard.didAllSink()
+                console.log(playerBoard.board)
+                console.log(playerBoard.getMissedHits())
+                console.log(playerBoard.getHits())
+                Player.changeCurrentPlayer(player2 , player1)
+                return [xCoord,yCoord,result,isSunken]
+            }catch{
+                console.log('didnt break')
+
+            }
+        }
+        
+    }
+    return {startGame,getPlayerBoard,getEnemyBoard,playRound,AIMove}
 })()
 
 module.exports = game
