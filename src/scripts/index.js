@@ -36,7 +36,7 @@ function renderGame(){
     DOM.populateBoard(computerBoard,Game.getEnemyBoard(),Game.getEnemyBoard().getShips())
     
 let chosenX , chosenY , result , sunk = false
-
+let hit
 for(let i = 0 ; i < computerBoard.length ; i++){
     computerBoard[i].addEventListener('click',()=>{
          
@@ -57,11 +57,21 @@ for(let i = 0 ; i < computerBoard.length ; i++){
                 computerBoard[i].appendChild(div)
                }
                if(isAllSunk){
-                gamePlayBoard = DOM.gamePlay()
-                isAllSunk = false
-                DOM.clearScreen()
-                
-                document.body.appendChild(shipRendering)
+                    gamePlayBoard = DOM.gamePlay()
+                    isAllSunk = false
+                    
+                    
+
+                    DOM.clearScreen()
+                    const [containerDone,shadowDone] = DOM.endGame(Game.getPlayer1())
+                    document.body.appendChild(containerDone)
+                    document.body.appendChild(shadowDone)
+                    document.querySelector('.reset-btn').addEventListener('click',()=>{
+                        DOM.clearScreen()
+                        document.body.appendChild(shipRendering)
+                    })
+                    
+                    
                }
                else{
                 if(sunk == false){
@@ -98,9 +108,18 @@ for(let i = 0 ; i < computerBoard.length ; i++){
                 if(sunk){
                     gamePlayBoard = DOM.gamePlay()
                     sunk = false
+                    
                 DOM.clearScreen()
+                let [container,shadow] = DOM.endGame(Game.getPlayer2())
+                document.body.appendChild(container)
+                document.body.appendChild(shadow)
+                document.querySelector('.reset-btn').addEventListener('click',()=>{
+                    DOM.clearScreen()
+                    document.body.appendChild(shipRendering)
+                })
                 
-                document.body.appendChild(shipRendering)
+                
+               
                 }
                 }
                 

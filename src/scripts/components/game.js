@@ -8,7 +8,9 @@ const Player = require('./player.js')
     let enemyBoard;
     let player1;
     let player2;
-   
+   let ship1
+   let ship2;
+   let ship3;
     const startGame = () =>{
         playerBoard = gameBoard.createGameBoard()
         enemyBoard = gameBoard.createGameBoard()
@@ -72,6 +74,8 @@ const Player = require('./player.js')
         
 
     }
+    const getPlayer1  = () => player1
+    const getPlayer2 = () => player2
     const AIMove = () =>{
         while(true){
             try{
@@ -91,7 +95,7 @@ const Player = require('./player.js')
         }
         
     }
-    return {startGame,getPlayerBoard,getEnemyBoard,playRound,AIMove}
+    return {startGame,getPlayerBoard,getEnemyBoard,playRound,AIMove,getPlayer1,getPlayer2}
 })()
 
 module.exports = game

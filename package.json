@@ -7,7 +7,7 @@
     "test": "jest",
     "watch":"jest --watch *.js",
     "start":"rm -rf .parcel-cache && parcel",
-    "build":"rm -rf .parcel-cache && parcel build"
+    "build":"rm -rf .parcel-cache && parcel build --public-url ./"
   },
   "keywords": [],
   "author": "Hussein Serag <husseinserag2014@gmail.com>",

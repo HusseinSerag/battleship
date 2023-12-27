@@ -133,3 +133,26 @@ export function populateBoard(arrayOfDivs , gameBoard,ships){
     }
 
 }
+
+export function x(){
+    console.log(1)
+}
+export function b(winner){
+    return winner
+}
+export function endGame(winner){
+    
+    let container = document.createElement('div')
+    container.classList.add('end-game')
+    let shadow = document.createElement('div')
+    shadow.classList.add('shadow')
+    let resetButton = document.createElement('button')
+    resetButton.classList.add('reset-btn')
+    resetButton.textContent = 'Reset'
+    let winnerText = document.createElement('div')
+    winnerText.classList.add('winner-text')
+    winnerText.textContent = `${winner.playerUserName} has won the game!`
+    container.appendChild(winnerText)
+    container.appendChild(resetButton)
+    return [container,shadow]
+}
