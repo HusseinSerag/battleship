@@ -46,7 +46,7 @@ const Player = require('./player.js')
         }
         
        let [row,column] = [...coord.split('').map(Number)]
-        console.log(`${Player.getCurrentPlayer().playerUserName}'s turn`)
+        
         if(Player.getCurrentPlayer() == player1 && attacker == 'Computer'){
             throw new Error('Wrong Board')
         }
@@ -65,7 +65,7 @@ const Player = require('./player.js')
                 
             }
             catch(err){
-                console.log(err)
+                
                 throw err
             }
         }
@@ -81,13 +81,11 @@ const Player = require('./player.js')
                let xCoord = Math.floor(Math.random()*10)
                 let result = playerBoard.receiveAttack([xCoord,yCoord])
                 let isSunken = playerBoard.didAllSink()
-                console.log(playerBoard.board)
-                console.log(playerBoard.getMissedHits())
-                console.log(playerBoard.getHits())
+               
                 Player.changeCurrentPlayer(player2 , player1)
                 return [xCoord,yCoord,result,isSunken]
             }catch{
-                console.log('didnt break')
+                
 
             }
         }

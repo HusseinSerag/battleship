@@ -2,12 +2,14 @@ import * as DOM from './ui-components/start.js'
 const Game = require('./components/game.js')
 
 
+
 let gamePlayBoard = DOM.gamePlay()
 let playerBoard
 let computerBoard
 
 let shipRendering = DOM.renderPlaceShipsOnBoard()
 let startGame = shipRendering.querySelector('.start-game')
+
 let resetButton = shipRendering.querySelector('.reset-btn-options')
 
 let startScreen = DOM.renderStart()
@@ -17,9 +19,11 @@ let correctBoard;
 let coordinatesAndDirection = []
 
 
+
 startBtn.addEventListener('click',()=>{
     DOM.clearScreen()
     coordinatesAndDirection = []
+    startGame.disabled = true
     document.body.appendChild(shipRendering)
     dragDrop()
     
@@ -44,7 +48,7 @@ function dragDrop(){
             
         })
         boardToBe[i].addEventListener('drop',(e)=>{
-            console.log(i)
+            
             e.preventDefault()
             let choice = document.querySelector('input[type=checkbox]')
             if(choice.checked){
@@ -73,6 +77,9 @@ function dragDrop(){
                        
                     }
                     choiceContainer.removeChild(dragged)
+                    if(coordinatesAndDirection.length == 5){
+                        startGame.disabled = false
+                    }
                 }
             }
             else{
@@ -100,45 +107,46 @@ function dragDrop(){
                        
                     }
                     choiceContainer.removeChild(dragged)
-                    console.log(coordinatesAndDirection)
+                    if(coordinatesAndDirection.length == 5){
+                        startGame.disabled = false
+                    }
                 }
             }
         })
     }
 }
 let isAllSunk = false
-function applyListeners(){
-    startGame.addEventListener('click',()=>{
-        let boardToBe = document.querySelectorAll('.board-start-container .board-start-div')
-        console.log(Array.from(boardToBe))
-        DOM.clearScreen()
-        Game.startGame(coordinatesAndDirection)
+startGame.addEventListener('click',()=>{
+    let boardToBe = document.querySelectorAll('.board-start-container .board-start-div')
+    
+    DOM.clearScreen()
+    Game.startGame(coordinatesAndDirection)
+    
+    document.body.appendChild(gamePlayBoard)
+    renderGame(gamePlayBoard)
+})
+resetButton.addEventListener('click',()=>{
         
-        document.body.appendChild(gamePlayBoard)
-        renderGame(gamePlayBoard)
-    })
-    resetButton.addEventListener('click',()=>{
-        
-        let container = shipRendering.querySelector('.board-start-container')
-        let choices = shipRendering.querySelector('.choices')
-        
-        shipRendering.removeChild(container)
-        shipRendering.removeChild(choices)
-        DOM.renderBoardAndChoices(shipRendering,100)
-         container = shipRendering.querySelector('.board-start-container')
-         choices = shipRendering.querySelector('.choices')
-         shipRendering.removeChild(container)
-        shipRendering.removeChild(choices)
-        shipRendering.insertBefore(container,resetButton)
-        shipRendering.insertBefore(choices,resetButton)
-        dragDrop()
-        coordinatesAndDirection = []
-    })
-}
+    let container = shipRendering.querySelector('.board-start-container')
+    let choices = shipRendering.querySelector('.choices')
+    
+    shipRendering.removeChild(container)
+    shipRendering.removeChild(choices)
+    DOM.renderBoardAndChoices(shipRendering,100)
+     container = shipRendering.querySelector('.board-start-container')
+     choices = shipRendering.querySelector('.choices')
+     shipRendering.removeChild(container)
+    shipRendering.removeChild(choices)
+    shipRendering.insertBefore(container,resetButton)
+    shipRendering.insertBefore(choices,resetButton)
+    dragDrop()
+    coordinatesAndDirection = []
+    startGame.disabled = true
+})
 
 
 function renderGame(){
-    console.log('here')
+    
     playerBoard = gamePlayBoard.querySelectorAll('.player-container .board-start-container .board-start-div')
      computerBoard = gamePlayBoard.querySelectorAll('.computer-container .board-start-container .board-start-div')
     
@@ -183,7 +191,7 @@ for(let i = 0 ; i < computerBoard.length ; i++){
                else{
                 if(sunk == false){
                     [chosenX , chosenY , result , sunk] = [...Game.AIMove()]
-                console.log(chosenX , chosenY , result , sunk)
+                
                 if(!result)
                 {
                     if(chosenX == 0){
@@ -194,7 +202,7 @@ for(let i = 0 ; i < computerBoard.length ; i++){
                     }else{
                         let stringNumber = `${chosenX}${chosenY}`
                         let number = Number(stringNumber)
-                        console.log(number)
+                        
                         let div = document.createElement('div')
                     div.classList.add('missed')
                     playerBoard[number].appendChild(div)
@@ -208,7 +216,7 @@ for(let i = 0 ; i < computerBoard.length ; i++){
                     }else{
                         let stringNumber = `${chosenX}${chosenY}`
                         let number = Number(stringNumber)
-                        console.log(number)
+                        
                         Array.from((playerBoard[number]).children)[0].classList.add('hit')
                     }
                 }
@@ -244,4 +252,3 @@ for(let i = 0 ; i < computerBoard.length ; i++){
 }
 
 
-applyListeners()

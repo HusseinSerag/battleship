@@ -1,6 +1,6 @@
 const gameBoard = (function(){
     const createGameBoard = () =>{
-        const size = 10
+    const size = 10
 let board =[]
 let missedHits = []
 let ships = []

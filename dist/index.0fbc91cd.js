@@ -591,6 +591,7 @@ let coordinatesAndDirection = [];
 startBtn.addEventListener("click", ()=>{
     _startJs.clearScreen();
     coordinatesAndDirection = [];
+    startGame.disabled = true;
     document.body.appendChild(shipRendering);
     dragDrop();
 });
@@ -610,7 +611,6 @@ function dragDrop() {
             let choice = document.querySelector("input[type=checkbox]");
         });
         boardToBe[i].addEventListener("drop", (e)=>{
-            console.log(i);
             e.preventDefault();
             let choice = document.querySelector("input[type=checkbox]");
             if (choice.checked) {
@@ -639,6 +639,7 @@ function dragDrop() {
                         boardToBe[i + z].appendChild(location);
                     }
                     choiceContainer.removeChild(dragged);
+                    if (coordinatesAndDirection.length == 5) startGame.disabled = false;
                 }
             } else if (_startJs.checkIfCorrectPlacement(i, dragged, 1, boardToBe) != false) {
                 let number;
@@ -665,39 +666,36 @@ function dragDrop() {
                     boardToBe[i + j].appendChild(location);
                 }
                 choiceContainer.removeChild(dragged);
-                console.log(coordinatesAndDirection);
+                if (coordinatesAndDirection.length == 5) startGame.disabled = false;
             }
         });
     }
 }
 let isAllSunk = false;
-function applyListeners() {
-    startGame.addEventListener("click", ()=>{
-        let boardToBe = document.querySelectorAll(".board-start-container .board-start-div");
-        console.log(Array.from(boardToBe));
-        _startJs.clearScreen();
-        Game.startGame(coordinatesAndDirection);
-        document.body.appendChild(gamePlayBoard);
-        renderGame(gamePlayBoard);
-    });
-    resetButton.addEventListener("click", ()=>{
-        let container = shipRendering.querySelector(".board-start-container");
-        let choices = shipRendering.querySelector(".choices");
-        shipRendering.removeChild(container);
-        shipRendering.removeChild(choices);
-        _startJs.renderBoardAndChoices(shipRendering, 100);
-        container = shipRendering.querySelector(".board-start-container");
-        choices = shipRendering.querySelector(".choices");
-        shipRendering.removeChild(container);
-        shipRendering.removeChild(choices);
-        shipRendering.insertBefore(container, resetButton);
-        shipRendering.insertBefore(choices, resetButton);
-        dragDrop();
-        coordinatesAndDirection = [];
-    });
-}
+startGame.addEventListener("click", ()=>{
+    let boardToBe = document.querySelectorAll(".board-start-container .board-start-div");
+    _startJs.clearScreen();
+    Game.startGame(coordinatesAndDirection);
+    document.body.appendChild(gamePlayBoard);
+    renderGame(gamePlayBoard);
+});
+resetButton.addEventListener("click", ()=>{
+    let container = shipRendering.querySelector(".board-start-container");
+    let choices = shipRendering.querySelector(".choices");
+    shipRendering.removeChild(container);
+    shipRendering.removeChild(choices);
+    _startJs.renderBoardAndChoices(shipRendering, 100);
+    container = shipRendering.querySelector(".board-start-container");
+    choices = shipRendering.querySelector(".choices");
+    shipRendering.removeChild(container);
+    shipRendering.removeChild(choices);
+    shipRendering.insertBefore(container, resetButton);
+    shipRendering.insertBefore(choices, resetButton);
+    dragDrop();
+    coordinatesAndDirection = [];
+    startGame.disabled = true;
+});
 function renderGame() {
-    console.log("here");
     playerBoard = gamePlayBoard.querySelectorAll(".player-container .board-start-container .board-start-div");
     computerBoard = gamePlayBoard.querySelectorAll(".computer-container .board-start-container .board-start-div");
     _startJs.populateBoard(playerBoard, Game.getPlayerBoard(), Game.getPlayerBoard().getShips());
@@ -728,7 +726,6 @@ function renderGame() {
                 [chosenX, chosenY, result, sunk] = [
                     ...Game.AIMove()
                 ];
-                console.log(chosenX, chosenY, result, sunk);
                 if (!result) {
                     if (chosenX == 0) {
                         let div = document.createElement("div");
@@ -737,7 +734,6 @@ function renderGame() {
                     } else {
                         let stringNumber = `${chosenX}${chosenY}`;
                         let number = Number(stringNumber);
-                        console.log(number);
                         let div = document.createElement("div");
                         div.classList.add("missed");
                         playerBoard[number].appendChild(div);
@@ -746,7 +742,6 @@ function renderGame() {
                 else {
                     let stringNumber = `${chosenX}${chosenY}`;
                     let number = Number(stringNumber);
-                    console.log(number);
                     Array.from(playerBoard[number].children)[0].classList.add("hit");
                 }
                 if (sunk) {
@@ -765,7 +760,6 @@ function renderGame() {
         } catch (error) {}
     });
 }
-applyListeners();
 
 },{"./ui-components/start.js":"eSf9I","6032f6a29c0d1148":"b9mUZ"}],"eSf9I":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
@@ -1038,7 +1032,6 @@ const game = function() {
         let [row, column] = [
             ...coord.split("").map(Number)
         ];
-        console.log(`${Player.getCurrentPlayer().playerUserName}'s turn`);
         if (Player.getCurrentPlayer() == player1 && attacker == "Computer") throw new Error("Wrong Board");
         else if (Player.getCurrentPlayer() == player2 && attacker == "Player") {
             Player.changeCurrentPlayer(player2, player1);
@@ -1056,7 +1049,6 @@ const game = function() {
                 isSunken
             ];
         } catch (err) {
-            console.log(err);
             throw err;
         }
     };
@@ -1071,9 +1063,6 @@ const game = function() {
                 yCoord
             ]);
             let isSunken = playerBoard.didAllSink();
-            console.log(playerBoard.board);
-            console.log(playerBoard.getMissedHits());
-            console.log(playerBoard.getHits());
             Player.changeCurrentPlayer(player2, player1);
             return [
                 xCoord,
@@ -1081,9 +1070,7 @@ const game = function() {
                 result,
                 isSunken
             ];
-        } catch  {
-            console.log("didnt break");
-        }
+        } catch  {}
     };
     return {
         startGame,
