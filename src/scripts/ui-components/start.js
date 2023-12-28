@@ -207,7 +207,7 @@ export function checkIfCorrectPlacement(i,dragged,index,boardToBe){
         number = Number(String(i).split('')[index])
     else
         number = i      
-    console.log(number)
+    
     if(String(i).length == 1 && index == 0){
         
     }

@@ -213,3 +213,9 @@ input{
     appearance: none;
 }
 
+.red{
+    background-color: #6E260E;
+}
+.green{
+    background-color: #50C878;
+}

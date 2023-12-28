@@ -46,9 +46,102 @@ function dragDrop(){
             e.preventDefault()
             let choice = document.querySelector('input[type=checkbox]')
             
-        })
-        boardToBe[i].addEventListener('drop',(e)=>{
+            if(choice.checked){
+                if(DOM.checkIfCorrectPlacement(i,dragged,0,boardToBe) != false){
+                    for(let j = 0  , z = 0; j < Number(dragged.getAttribute('length')) ; z =z+10 ,j++){
+                        if(boardToBe[i+z])
+                        boardToBe[i+z].classList.add('green')
+                        
+                       
+                    }
+                }
+                else{
+                    for(let j = 0  , z = 0; j < Number(dragged.getAttribute('length')) ; z =z+10 ,j++){
+                        if(boardToBe[i+z])
+                        boardToBe[i+z].classList.add('red')
+                        
+                       
+                    }
+                }
+                
+                
+            }
+            else{
+                if(DOM.checkIfCorrectPlacement(i,dragged,1,boardToBe) != false){
+                    for(let j = 0  ; j < Number(dragged.getAttribute('length')) ;  j++){
+                        boardToBe[i+j].classList.add('green')
+                       
+                    }
+                }
+                else{
+                    for(let j = 0  ; j < Number(dragged.getAttribute('length')) ;  j++){
+                        let number
+                    if(String(i).length == 2)
+                        number = Number(String(i).split('')[1])
+                    else
+                        number = i      
+    
+                        if(boardToBe[i+j] && number+j < 10)
+                        {
+                            boardToBe[i+j].classList.add('red')
+                            
+                        }
+                    }
+                }
+            }
             
+        })
+        
+        boardToBe[i].addEventListener('dragleave',(e)=>{
+            e.preventDefault()
+            let choice = document.querySelector('input[type=checkbox]')
+            
+            if(choice.checked){
+                if(DOM.checkIfCorrectPlacement(i,dragged,0,boardToBe) != false){
+                    for(let j = 0  , z = 0; j < Number(dragged.getAttribute('length')) ; z =z+10 ,j++){
+                        if(boardToBe[i+z])
+                        boardToBe[i+z].classList.remove('green')
+                        
+                       
+                    }
+                    
+                }
+                else{
+                    for(let j = 0  , z = 0; j < Number(dragged.getAttribute('length')) ; z =z+10 ,j++){
+                        if(boardToBe[i+z])
+                        boardToBe[i+z].classList.remove('red')
+                        
+                       
+                    }
+                }
+                
+                
+            }
+            else{
+                if(DOM.checkIfCorrectPlacement(i,dragged,1,boardToBe) != false){
+                    for(let j = 0  ; j < Number(dragged.getAttribute('length')) ;  j++){
+                        boardToBe[i+j].classList.remove('green')
+                       
+                    }
+                }
+                else{
+                    for(let j = 0  ; j < Number(dragged.getAttribute('length')) ;  j++){
+
+                        if(boardToBe[i+j])
+                        boardToBe[i+j].classList.remove('red')
+                       
+                    }
+                }
+            }
+            
+        })
+
+        
+        boardToBe[i].addEventListener('drop',(e)=>{
+            for(let j = 0 ; j < boardToBe.length ; j++){
+                boardToBe[j].classList.remove('red')
+                boardToBe[j].classList.remove('green')
+            }
             e.preventDefault()
             let choice = document.querySelector('input[type=checkbox]')
             if(choice.checked){
