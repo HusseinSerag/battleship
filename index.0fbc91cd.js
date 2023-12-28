@@ -609,8 +609,43 @@ function dragDrop() {
         boardToBe[i].addEventListener("dragover", (e)=>{
             e.preventDefault();
             let choice = document.querySelector("input[type=checkbox]");
+            if (choice.checked) {
+                if (_startJs.checkIfCorrectPlacement(i, dragged, 0, boardToBe) != false) {
+                    for(let j = 0, z = 0; j < Number(dragged.getAttribute("length")); z = z + 10, j++)if (boardToBe[i + z]) boardToBe[i + z].classList.add("green");
+                } else {
+                    for(let j = 0, z = 0; j < Number(dragged.getAttribute("length")); z = z + 10, j++)if (boardToBe[i + z]) boardToBe[i + z].classList.add("red");
+                }
+            } else {
+                if (_startJs.checkIfCorrectPlacement(i, dragged, 1, boardToBe) != false) for(let j = 0; j < Number(dragged.getAttribute("length")); j++)boardToBe[i + j].classList.add("green");
+                else for(let j = 0; j < Number(dragged.getAttribute("length")); j++){
+                    let number;
+                    if (String(i).length == 2) number = Number(String(i).split("")[1]);
+                    else number = i;
+                    if (boardToBe[i + j] && number + j < 10) boardToBe[i + j].classList.add("red");
+                }
+            }
+        });
+        boardToBe[i].addEventListener("dragleave", (e)=>{
+            e.preventDefault();
+            let choice = document.querySelector("input[type=checkbox]");
+            if (choice.checked) {
+                if (_startJs.checkIfCorrectPlacement(i, dragged, 0, boardToBe) != false) {
+                    for(let j = 0, z = 0; j < Number(dragged.getAttribute("length")); z = z + 10, j++)if (boardToBe[i + z]) boardToBe[i + z].classList.remove("green");
+                } else {
+                    for(let j = 0, z = 0; j < Number(dragged.getAttribute("length")); z = z + 10, j++)if (boardToBe[i + z]) boardToBe[i + z].classList.remove("red");
+                }
+            } else {
+                if (_startJs.checkIfCorrectPlacement(i, dragged, 1, boardToBe) != false) for(let j = 0; j < Number(dragged.getAttribute("length")); j++)boardToBe[i + j].classList.remove("green");
+                else {
+                    for(let j = 0; j < Number(dragged.getAttribute("length")); j++)if (boardToBe[i + j]) boardToBe[i + j].classList.remove("red");
+                }
+            }
         });
         boardToBe[i].addEventListener("drop", (e)=>{
+            for(let j = 0; j < boardToBe.length; j++){
+                boardToBe[j].classList.remove("red");
+                boardToBe[j].classList.remove("green");
+            }
             e.preventDefault();
             let choice = document.querySelector("input[type=checkbox]");
             if (choice.checked) {
@@ -936,7 +971,6 @@ function checkIfCorrectPlacement(i, dragged, index, boardToBe) {
     let number;
     if (String(i).length == 2) number = Number(String(i).split("")[index]);
     else number = i;
-    console.log(number);
     String(i).length == 1 && index;
     if (number + Number(dragged.getAttribute("length")) - 1 >= 10) {
         if (String(i).length == 1 && index == 0) ;
