@@ -71,7 +71,7 @@ body {
 .start-and-choice {
   background-color: #fff;
   flex-flow: column;
-  gap: 10px;
+  gap: 20px;
   padding: 1rem;
   display: flex;
 }
@@ -146,6 +146,13 @@ body {
   height: 15px;
 }
 
+.location {
+  background-color: #252958;
+  border-radius: 15px;
+  width: 15px;
+  height: 15px;
+}
+
 .missed {
   background-color: #505050;
   border-radius: 15px;
@@ -184,6 +191,35 @@ body {
 
 .winner-text {
   font-size: 2rem;
+}
+
+.choices {
+  grid-template-columns: 1fr 1fr;
+  display: grid;
+}
+
+.ship {
+  color: #505050;
+}
+
+.label-element {
+  width: 80px;
+}
+
+span {
+  color: #505050;
+  border: 5px solid #505050;
+  padding: 10px;
+}
+
+.label-element input:checked + span {
+  color: #fff;
+  background-color: #505050;
+  border: 5px solid #fff;
+}
+
+input {
+  appearance: none;
 }
 
 /*# sourceMappingURL=index.24e035ef.css.map */

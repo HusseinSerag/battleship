@@ -585,12 +585,86 @@ let startGame = shipRendering.querySelector(".start-game");
 let startScreen = _startJs.renderStart();
 document.body.appendChild(startScreen);
 let startBtn = startScreen.querySelector(".start-button");
+let correctBoard;
 startBtn.addEventListener("click", ()=>{
     _startJs.clearScreen();
     document.body.appendChild(shipRendering);
+    let choiceContainer = document.querySelector(".choices");
+    let choices = document.querySelectorAll(".choices .ship");
+    let boardToBe = document.querySelectorAll(".board-start-container .board-start-div");
+    let coordinatesAndDirection = [];
+    let dragged;
+    choices.forEach((choice)=>{
+        choice.addEventListener("drag", (event)=>{
+            dragged = event.target;
+        });
+    });
+    for(let i = 0; i < boardToBe.length; i++){
+        boardToBe[i].addEventListener("dragover", (e)=>{
+            e.preventDefault();
+            let choice = document.querySelector("input[type=checkbox]");
+        });
+        boardToBe[i].addEventListener("drop", (e)=>{
+            console.log(i);
+            e.preventDefault();
+            let choice = document.querySelector("input[type=checkbox]");
+            if (choice.checked) {
+                if (_startJs.checkIfCorrectPlacement(i, dragged, 0, boardToBe) != false) {
+                    let number;
+                    if (String(i).length == 2) {
+                        number = String(i).split("").map(Number);
+                        coordinatesAndDirection.push({
+                            row: number[0],
+                            column: number[1],
+                            direction: false
+                        });
+                    } else {
+                        number = i;
+                        coordinatesAndDirection.push({
+                            row: 0,
+                            column: number,
+                            direction: false
+                        });
+                    }
+                    for(let j = 0, z = 0; j < Number(dragged.getAttribute("length")); z = z + 10, j++){
+                        let location = document.createElement("div");
+                        location.classList.add("location");
+                        boardToBe[i + z].appendChild(location);
+                    }
+                    choiceContainer.removeChild(dragged);
+                }
+            } else if (_startJs.checkIfCorrectPlacement(i, dragged, 1, boardToBe) != false) {
+                let number;
+                if (String(i).length == 2) {
+                    number = String(i).split("").map(Number);
+                    coordinatesAndDirection.push({
+                        row: number[0],
+                        column: number[1],
+                        direction: true
+                    });
+                } else {
+                    number = i;
+                    coordinatesAndDirection.push({
+                        row: 0,
+                        column: number,
+                        direction: true
+                    });
+                }
+                for(let j = 0; j < Number(dragged.getAttribute("length")); j++){
+                    let location = document.createElement("div");
+                    location.classList.add("location");
+                    boardToBe[i + j].appendChild(location);
+                }
+                choiceContainer.removeChild(dragged);
+                console.log(coordinatesAndDirection);
+            }
+        });
+    }
 });
 let isAllSunk = false;
 startGame.addEventListener("click", ()=>{
+    let boardToBe = document.querySelectorAll(".board-start-container .board-start-div");
+    console.log(Array.from(boardToBe));
     _startJs.clearScreen();
     Game.startGame();
     document.body.appendChild(gamePlayBoard);
@@ -677,6 +751,7 @@ parcelHelpers.export(exports, "populateBoard", ()=>populateBoard);
 parcelHelpers.export(exports, "x", ()=>x);
 parcelHelpers.export(exports, "b", ()=>b);
 parcelHelpers.export(exports, "endGame", ()=>endGame);
+parcelHelpers.export(exports, "checkIfCorrectPlacement", ()=>checkIfCorrectPlacement);
 var _startCss = require("../../styles/start.css");
 function renderStart() {
     let container = document.createElement("div");
@@ -705,6 +780,46 @@ function renderPlaceShipsOnBoard(boardSize = 100) {
     return mainContainer;
 }
 function renderChoices(choices) {
+    let ships = [
+        {
+            name: "Boat",
+            length: 2
+        },
+        {
+            name: "Submarine",
+            length: 3
+        },
+        {
+            name: "Destroyer",
+            length: 3
+        },
+        {
+            name: "Compressor",
+            length: 4
+        },
+        {
+            name: "Defender",
+            length: 5
+        }
+    ];
+    for(let i = 0; i < ships.length; i++){
+        let div = document.createElement("div");
+        div.classList.add("ship");
+        div.draggable = true;
+        div.textContent = `${ships[i].name} (${ships[i].length})`;
+        div.setAttribute("length", ships[i].length);
+        choices.appendChild(div);
+    }
+    choices.classList.add("choices");
+    let label = document.createElement("label");
+    let span = document.createElement("span");
+    label.classList.add("label-element");
+    let input = document.createElement("input");
+    input.type = "checkbox";
+    span.textContent = "rotate";
+    label.appendChild(input);
+    label.appendChild(span);
+    choices.appendChild(label);
     return choices;
 }
 function renderBoard(container, boardSize) {
@@ -795,6 +910,28 @@ function endGame(winner) {
         container,
         shadow
     ];
+}
+function checkIfCorrectPlacement(i, dragged, index, boardToBe) {
+    let number;
+    if (String(i).length == 2) number = Number(String(i).split("")[index]);
+    else number = i;
+    console.log(number);
+    String(i).length == 1 && index;
+    if (number + Number(dragged.getAttribute("length")) - 1 >= 10) {
+        if (String(i).length == 1 && index == 0) ;
+        else return false;
+    }
+    if (index == 0) {
+        for(let j = 0, z = 0; j < Number(dragged.getAttribute("length")); z = z + 10, j++)if (Array.from(boardToBe[i + z].children).length != 0) {
+            console.log("something is in the way");
+            return false;
+        }
+    } else {
+        for(let j = 0; j < Number(dragged.getAttribute("length")); j++)if (Array.from(boardToBe[i + j].children).length != 0) {
+            console.log("something is in the way");
+            return false;
+        }
+    }
 }
 
 },{"../../styles/start.css":"6Sw75","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"6Sw75":[function() {},{}],"gkKU3":[function(require,module,exports) {
