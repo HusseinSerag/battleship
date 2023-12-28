@@ -8,19 +8,17 @@ const Player = require('./player.js')
     let enemyBoard;
     let player1;
     let player2;
-   let ship1
-   let ship2;
-   let ship3;
-    const startGame = () =>{
+   
+    const startGame = (coordinatesAndDirection) =>{
         playerBoard = gameBoard.createGameBoard()
         enemyBoard = gameBoard.createGameBoard()
         playerBoard.initalizeBoard()
         enemyBoard.initalizeBoard()
-        ship1 = Ship.createShip(3,0,false)
-        ship2 = Ship.createShip(3,0,false)
-        ship3 = Ship.createShip(6,0,false)
-        playerBoard.placeShip(ship1,true,0,0)
-        playerBoard.placeShip(ship3,false,2,2)
+        for(let i = 0 ; i < coordinatesAndDirection.length ; i++){
+            let ship = Ship.createShip(coordinatesAndDirection[i].length , 0 , false)
+            
+            playerBoard.placeShip(ship,coordinatesAndDirection[i].direction,coordinatesAndDirection[i].row,coordinatesAndDirection[i].column)
+        }
        let j = 0 
        let trueOrFalse = [true,false]
        while(j < shipLengths.length){

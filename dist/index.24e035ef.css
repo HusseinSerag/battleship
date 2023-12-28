@@ -76,12 +76,12 @@ body {
   display: flex;
 }
 
-.start-game {
+.start-game, .reset-btn-options {
   color: #505050;
-  border: none;
+  border: 5px solid #505050;
 }
 
-.start-game:hover {
+.start-game:hover, .reset-btn-options:hover {
   transform: scale(1.1);
 }
 

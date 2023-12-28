@@ -8,18 +8,28 @@ let computerBoard
 
 let shipRendering = DOM.renderPlaceShipsOnBoard()
 let startGame = shipRendering.querySelector('.start-game')
+let resetButton = shipRendering.querySelector('.reset-btn-options')
 
 let startScreen = DOM.renderStart()
 document.body.appendChild(startScreen)
 let startBtn = startScreen.querySelector('.start-button')
 let correctBoard;
+let coordinatesAndDirection = []
+
+
 startBtn.addEventListener('click',()=>{
     DOM.clearScreen()
+    coordinatesAndDirection = []
     document.body.appendChild(shipRendering)
+    dragDrop()
+    
+    
+})
+function dragDrop(){
     let choiceContainer = document.querySelector('.choices')
     let choices = document.querySelectorAll('.choices .ship')
     let boardToBe = document.querySelectorAll('.board-start-container .board-start-div')
-    let coordinatesAndDirection = []
+    
     let dragged;
     choices.forEach(choice =>{
         choice.addEventListener('drag',(event)=>{
@@ -44,13 +54,13 @@ startBtn.addEventListener('click',()=>{
                     {
                         number = String(i).split('').map(Number)
                         
-                        coordinatesAndDirection.push({row:number[0],column:number[1],direction:false})
+                        coordinatesAndDirection.push({row:number[0],column:number[1],direction:false , length:Number(dragged.getAttribute('length'))})
                     }
                         
                     else
                     {
                         number = i
-                        coordinatesAndDirection.push({row:0,column:number,direction:false})
+                        coordinatesAndDirection.push({row:0,column:number,direction:false, length:Number(dragged.getAttribute('length'))})
                     }
                         
                     
@@ -71,7 +81,7 @@ startBtn.addEventListener('click',()=>{
                     if(String(i).length == 2)
                     {
                         number = String(i).split('').map(Number)
-                        coordinatesAndDirection.push({row:number[0],column:number[1],direction:true})
+                        coordinatesAndDirection.push({row:number[0],column:number[1],direction:true, length:Number(dragged.getAttribute('length'))})
                         
                     }
                         
@@ -79,7 +89,7 @@ startBtn.addEventListener('click',()=>{
                     {
                        
                         number = i
-                        coordinatesAndDirection.push({row:0,column:number,direction:true})
+                        coordinatesAndDirection.push({row:0,column:number,direction:true, length:Number(dragged.getAttribute('length'))})
                     }
                        
                     
@@ -95,19 +105,37 @@ startBtn.addEventListener('click',()=>{
             }
         })
     }
-    
-})
-
+}
 let isAllSunk = false
-startGame.addEventListener('click',()=>{
-    
-    let boardToBe = document.querySelectorAll('.board-start-container .board-start-div')
-    console.log(Array.from(boardToBe))
-    DOM.clearScreen()
-    Game.startGame()
-    document.body.appendChild(gamePlayBoard)
-    renderGame(gamePlayBoard)
-})
+function applyListeners(){
+    startGame.addEventListener('click',()=>{
+        let boardToBe = document.querySelectorAll('.board-start-container .board-start-div')
+        console.log(Array.from(boardToBe))
+        DOM.clearScreen()
+        Game.startGame(coordinatesAndDirection)
+        
+        document.body.appendChild(gamePlayBoard)
+        renderGame(gamePlayBoard)
+    })
+    resetButton.addEventListener('click',()=>{
+        
+        let container = shipRendering.querySelector('.board-start-container')
+        let choices = shipRendering.querySelector('.choices')
+        
+        shipRendering.removeChild(container)
+        shipRendering.removeChild(choices)
+        DOM.renderBoardAndChoices(shipRendering,100)
+         container = shipRendering.querySelector('.board-start-container')
+         choices = shipRendering.querySelector('.choices')
+         shipRendering.removeChild(container)
+        shipRendering.removeChild(choices)
+        shipRendering.insertBefore(container,resetButton)
+        shipRendering.insertBefore(choices,resetButton)
+        dragDrop()
+        coordinatesAndDirection = []
+    })
+}
+
 
 function renderGame(){
     console.log('here')
@@ -125,10 +153,7 @@ for(let i = 0 ; i < computerBoard.length ; i++){
         if(isAllSunk == false){
             try{
                 [hit, isAllSunk ]=  Game.playRound(i,'Player')
-                
-                
-
-                
+               
                if(hit)
                {
                 Array.from((computerBoard[i]).children)[0].classList.add('visible')
@@ -219,3 +244,4 @@ for(let i = 0 ; i < computerBoard.length ; i++){
 }
 
 
+applyListeners()

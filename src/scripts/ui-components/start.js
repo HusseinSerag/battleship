@@ -21,15 +21,23 @@ export function renderPlaceShipsOnBoard(boardSize=100){
     
     let mainContainer = document.createElement('div')
     mainContainer.classList.add('start-and-choice')
-     let container = document.createElement('div')
+        renderBoardAndChoices(mainContainer,boardSize)
+        let startGame = document.createElement('button')
+        let reset = document.createElement('button')
+        reset.textContent = 'RESET CHANGES'
+        reset.classList.add('reset-btn-options')
+        startGame.classList.add('start-game')
+        startGame.textContent = 'START BATTLE'
+        mainContainer.appendChild(reset)
+        mainContainer.appendChild(startGame)
+        return mainContainer
+}
+
+export function renderBoardAndChoices(mainContainer,boardSize){
+    let container = document.createElement('div')
         mainContainer.appendChild(renderBoard(container,boardSize))
         let choices = document.createElement('div')
         mainContainer.appendChild(renderChoices(choices))
-        let startGame = document.createElement('button')
-        startGame.classList.add('start-game')
-        startGame.textContent = 'START BATTLE'
-        mainContainer.appendChild(startGame)
-        return mainContainer
 }
 
 
@@ -175,12 +183,7 @@ export function populateBoard(arrayOfDivs , gameBoard,ships){
 
 }
 
-export function x(){
-    console.log(1)
-}
-export function b(winner){
-    return winner
-}
+
 export function endGame(winner){
     
     let container = document.createElement('div')

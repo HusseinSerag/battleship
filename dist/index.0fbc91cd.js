@@ -582,17 +582,22 @@ let playerBoard;
 let computerBoard;
 let shipRendering = _startJs.renderPlaceShipsOnBoard();
 let startGame = shipRendering.querySelector(".start-game");
+let resetButton = shipRendering.querySelector(".reset-btn-options");
 let startScreen = _startJs.renderStart();
 document.body.appendChild(startScreen);
 let startBtn = startScreen.querySelector(".start-button");
 let correctBoard;
+let coordinatesAndDirection = [];
 startBtn.addEventListener("click", ()=>{
     _startJs.clearScreen();
+    coordinatesAndDirection = [];
     document.body.appendChild(shipRendering);
+    dragDrop();
+});
+function dragDrop() {
     let choiceContainer = document.querySelector(".choices");
     let choices = document.querySelectorAll(".choices .ship");
     let boardToBe = document.querySelectorAll(".board-start-container .board-start-div");
-    let coordinatesAndDirection = [];
     let dragged;
     choices.forEach((choice)=>{
         choice.addEventListener("drag", (event)=>{
@@ -616,14 +621,16 @@ startBtn.addEventListener("click", ()=>{
                         coordinatesAndDirection.push({
                             row: number[0],
                             column: number[1],
-                            direction: false
+                            direction: false,
+                            length: Number(dragged.getAttribute("length"))
                         });
                     } else {
                         number = i;
                         coordinatesAndDirection.push({
                             row: 0,
                             column: number,
-                            direction: false
+                            direction: false,
+                            length: Number(dragged.getAttribute("length"))
                         });
                     }
                     for(let j = 0, z = 0; j < Number(dragged.getAttribute("length")); z = z + 10, j++){
@@ -640,14 +647,16 @@ startBtn.addEventListener("click", ()=>{
                     coordinatesAndDirection.push({
                         row: number[0],
                         column: number[1],
-                        direction: true
+                        direction: true,
+                        length: Number(dragged.getAttribute("length"))
                     });
                 } else {
                     number = i;
                     coordinatesAndDirection.push({
                         row: 0,
                         column: number,
-                        direction: true
+                        direction: true,
+                        length: Number(dragged.getAttribute("length"))
                     });
                 }
                 for(let j = 0; j < Number(dragged.getAttribute("length")); j++){
@@ -660,16 +669,33 @@ startBtn.addEventListener("click", ()=>{
             }
         });
     }
-});
+}
 let isAllSunk = false;
-startGame.addEventListener("click", ()=>{
-    let boardToBe = document.querySelectorAll(".board-start-container .board-start-div");
-    console.log(Array.from(boardToBe));
-    _startJs.clearScreen();
-    Game.startGame();
-    document.body.appendChild(gamePlayBoard);
-    renderGame(gamePlayBoard);
-});
+function applyListeners() {
+    startGame.addEventListener("click", ()=>{
+        let boardToBe = document.querySelectorAll(".board-start-container .board-start-div");
+        console.log(Array.from(boardToBe));
+        _startJs.clearScreen();
+        Game.startGame(coordinatesAndDirection);
+        document.body.appendChild(gamePlayBoard);
+        renderGame(gamePlayBoard);
+    });
+    resetButton.addEventListener("click", ()=>{
+        let container = shipRendering.querySelector(".board-start-container");
+        let choices = shipRendering.querySelector(".choices");
+        shipRendering.removeChild(container);
+        shipRendering.removeChild(choices);
+        _startJs.renderBoardAndChoices(shipRendering, 100);
+        container = shipRendering.querySelector(".board-start-container");
+        choices = shipRendering.querySelector(".choices");
+        shipRendering.removeChild(container);
+        shipRendering.removeChild(choices);
+        shipRendering.insertBefore(container, resetButton);
+        shipRendering.insertBefore(choices, resetButton);
+        dragDrop();
+        coordinatesAndDirection = [];
+    });
+}
 function renderGame() {
     console.log("here");
     playerBoard = gamePlayBoard.querySelectorAll(".player-container .board-start-container .board-start-div");
@@ -739,17 +765,17 @@ function renderGame() {
         } catch (error) {}
     });
 }
+applyListeners();
 
 },{"./ui-components/start.js":"eSf9I","6032f6a29c0d1148":"b9mUZ"}],"eSf9I":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "renderStart", ()=>renderStart);
 parcelHelpers.export(exports, "renderPlaceShipsOnBoard", ()=>renderPlaceShipsOnBoard);
+parcelHelpers.export(exports, "renderBoardAndChoices", ()=>renderBoardAndChoices);
 parcelHelpers.export(exports, "clearScreen", ()=>clearScreen);
 parcelHelpers.export(exports, "gamePlay", ()=>gamePlay);
 parcelHelpers.export(exports, "populateBoard", ()=>populateBoard);
-parcelHelpers.export(exports, "x", ()=>x);
-parcelHelpers.export(exports, "b", ()=>b);
 parcelHelpers.export(exports, "endGame", ()=>endGame);
 parcelHelpers.export(exports, "checkIfCorrectPlacement", ()=>checkIfCorrectPlacement);
 var _startCss = require("../../styles/start.css");
@@ -769,15 +795,22 @@ function renderStart() {
 function renderPlaceShipsOnBoard(boardSize = 100) {
     let mainContainer = document.createElement("div");
     mainContainer.classList.add("start-and-choice");
+    renderBoardAndChoices(mainContainer, boardSize);
+    let startGame = document.createElement("button");
+    let reset = document.createElement("button");
+    reset.textContent = "RESET CHANGES";
+    reset.classList.add("reset-btn-options");
+    startGame.classList.add("start-game");
+    startGame.textContent = "START BATTLE";
+    mainContainer.appendChild(reset);
+    mainContainer.appendChild(startGame);
+    return mainContainer;
+}
+function renderBoardAndChoices(mainContainer, boardSize) {
     let container = document.createElement("div");
     mainContainer.appendChild(renderBoard(container, boardSize));
     let choices = document.createElement("div");
     mainContainer.appendChild(renderChoices(choices));
-    let startGame = document.createElement("button");
-    startGame.classList.add("start-game");
-    startGame.textContent = "START BATTLE";
-    mainContainer.appendChild(startGame);
-    return mainContainer;
 }
 function renderChoices(choices) {
     let ships = [
@@ -887,12 +920,6 @@ function populateBoard(arrayOfDivs, gameBoard, ships) {
         }
     }
 }
-function x() {
-    console.log(1);
-}
-function b(winner) {
-    return winner;
-}
 function endGame(winner) {
     let container = document.createElement("div");
     container.classList.add("end-game");
@@ -980,19 +1007,15 @@ const game = function() {
     let enemyBoard;
     let player1;
     let player2;
-    let ship1;
-    let ship2;
-    let ship3;
-    const startGame = ()=>{
+    const startGame = (coordinatesAndDirection)=>{
         playerBoard = gameBoard.createGameBoard();
         enemyBoard = gameBoard.createGameBoard();
         playerBoard.initalizeBoard();
         enemyBoard.initalizeBoard();
-        ship1 = Ship.createShip(3, 0, false);
-        ship2 = Ship.createShip(3, 0, false);
-        ship3 = Ship.createShip(6, 0, false);
-        playerBoard.placeShip(ship1, true, 0, 0);
-        playerBoard.placeShip(ship3, false, 2, 2);
+        for(let i = 0; i < coordinatesAndDirection.length; i++){
+            let ship = Ship.createShip(coordinatesAndDirection[i].length, 0, false);
+            playerBoard.placeShip(ship, coordinatesAndDirection[i].direction, coordinatesAndDirection[i].row, coordinatesAndDirection[i].column);
+        }
         let j = 0;
         let trueOrFalse = [
             true,
