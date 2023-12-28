@@ -32,7 +32,48 @@ export function renderPlaceShipsOnBoard(boardSize=100){
         return mainContainer
 }
 
+
+
 function renderChoices(choices){
+    let ships = [
+        {
+            name:"Boat",
+            length:2
+        },{
+            name:"Submarine",
+            length:3
+        },{
+            name:"Destroyer",
+            length:3
+        },{
+            name:"Compressor",
+            length:4
+        },{
+            name:"Defender",
+            length:5
+        }
+        
+    ]
+    for(let i = 0 ; i < ships.length ; i++){
+        let div = document.createElement('div')
+        div.classList.add('ship')
+        div.draggable = true
+        div.textContent = `${ships[i].name} (${ships[i].length})`
+        div.setAttribute('length',ships[i].length)
+        choices.appendChild(div)
+    }
+    choices.classList.add('choices')
+    let label = document.createElement('label')
+    let span = document.createElement('span')
+    label.classList.add('label-element')
+    let input = document.createElement('input')
+    input.type = 'checkbox'
+    span.textContent = 'rotate'
+    label.appendChild(input)
+    label.appendChild(span)
+    
+    
+    choices.appendChild(label)
     return choices
 }
 function renderBoard(container,boardSize){
@@ -155,4 +196,44 @@ export function endGame(winner){
     container.appendChild(winnerText)
     container.appendChild(resetButton)
     return [container,shadow]
+}
+
+export function checkIfCorrectPlacement(i,dragged,index,boardToBe){
+    let number
+    if(String(i).length == 2)
+        number = Number(String(i).split('')[index])
+    else
+        number = i      
+    console.log(number)
+    if(String(i).length == 1 && index == 0){
+        
+    }
+    if(number + Number(dragged.getAttribute('length')) -1 >=10){ 
+        if(String(i).length == 1 && index == 0){
+        
+        }else{
+            return false
+        }
+        
+    }
+    if(index ==0){
+        for(let j = 0  , z = 0; j < Number(dragged.getAttribute('length')) ; z =z+10 ,j++){
+            
+            if(Array.from(boardToBe[i+z].children).length != 0){
+                console.log('something is in the way')
+                return false
+            }
+            
+           
+        }
+    }
+    else{
+        for(let j = 0  ; j < Number(dragged.getAttribute('length')) ;  j++){
+            if(Array.from(boardToBe[i+j].children).length != 0){
+                console.log('something is in the way')
+                return false
+            }
+           
+        }
+    }
 }

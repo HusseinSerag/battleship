@@ -67,7 +67,7 @@ body{
     display: flex;
     flex-flow:column nowrap;
     padding:1rem;
-    gap:10px;
+    gap:20px;
     background-color: white;
 }
 .start-game{
@@ -138,7 +138,12 @@ font-size: 1rem;
     background-color: #f22613;
     visibility: visible;
 }
-
+.location{
+    width:15px;
+    height: 15px;
+    border-radius: 15px;
+    background-color: #252958;
+}
 .missed{
     width:15px;
     height: 15px;
@@ -179,4 +184,31 @@ font-size: 1rem;
     font-size: 2rem;
 }
 
+.choices{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
 
+.ship{
+    color:#505050
+}
+.label-element{
+    
+    width:80px;
+    
+   
+}
+
+span{
+    padding:10px;
+    color:#505050;
+    border: 5px solid #505050;
+}
+.label-element input:checked + span{
+    color:white;
+    border: 5px solid white;
+    background-color: #505050;
+}
+input{
+    appearance: none;
+}
